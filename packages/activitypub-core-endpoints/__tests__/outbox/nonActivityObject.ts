@@ -1,23 +1,22 @@
 import { ACTIVITYSTREAMS_CONTEXT } from 'activitypub-core-utilities';
 import { AP } from 'activitypub-core-types';
-import * as data from '../../../__data__';
-import { handleOutboxPost } from '..';
+import * as data from '../../__data__';
+import { handleOutboxPost } from '.';
 
 describe('Endpoints', () => {
   describe('Actor Outbox', () => {
-    it('Accepts POST: delete', async () => {
-      const activity: AP.Activity = {
+    it('Accepts non-Activity Objects, and converts to Create Activities (`outbox:accepts-non-activity-objects`) *MUST*', async () => {
+      const object: AP.Note = {
         '@context': ACTIVITYSTREAMS_CONTEXT,
-        type: 'Delete',
-        actor: new URL(data.aliceUrl),
-        object: new URL(data.note1Url),
+        type: 'Note',
+        summary: 'Hello world',
       };
 
       const { res, saveEntity, insertOrderedItem, broadcast } =
-        await handleOutboxPost(activity, data.aliceOutboxUrl);
+        await handleOutboxPost(object, data.aliceOutboxUrl);
 
       expect(res.statusCode).toBe(201);
-      expect(saveEntity).toBeCalledTimes(5);
+      expect(saveEntity).toBeCalledTimes(8);
       expect(insertOrderedItem).toBeCalledTimes(1);
       expect(broadcast).toBeCalledTimes(1);
     });

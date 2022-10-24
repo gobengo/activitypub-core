@@ -3,29 +3,19 @@ import {
   getCollectionNameByUrl,
 } from 'activitypub-core-utilities';
 import { AP } from 'activitypub-core-types';
-import * as data from '../../../__data__';
-import { handleOutboxPost } from '../';
+import * as data from '../../__data__';
+import { handleOutboxPost } from '.';
 
 describe('Endpoints', () => {
   describe('Actor Outbox', () => {
-    it('Accepts JSON-LD Objects', async () => {
-      const activity = {
-        "@context": {
-          "as": `${ACTIVITYSTREAMS_CONTEXT}#`,
-          "schema": "https://schema.org/",
-        },
-        "@type": [
-          "as:Arrive",
-          "schema:Person",
-        ],
-        "as:actor": [
-          {
-            "@id": new URL(data.aliceUrl),
-          },
-        ],
-        "as:location": {
-          "@type": "Place",
-          "as:name": "Disney World",
+    it('Accepts Activity Objects (outbox:accepts-activities)', async () => {
+      const activity: AP.Arrive = {
+        '@context': new URL(ACTIVITYSTREAMS_CONTEXT),
+        type: AP.ActivityTypes.ARRIVE,
+        actor: new URL(data.aliceUrl),
+        location: {
+          type: AP.ExtendedObjectTypes.PLACE,
+          name: 'NYC',
         },
       };
 
