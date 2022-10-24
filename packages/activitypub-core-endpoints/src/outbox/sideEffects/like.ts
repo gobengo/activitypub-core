@@ -1,8 +1,8 @@
-import { OutboxPostHandler } from '..';
+import { OutboxEndpoint } from '..';
 import { AP } from 'activitypub-core-types';
 import { getCollectionNameByUrl, getId } from 'activitypub-core-utilities';
 
-export async function handleLike(this: OutboxPostHandler) {
+export async function handleLike(this: OutboxEndpoint) {
   if (!('object' in this.activity)) {
     throw new Error('Bad activity: no object.');
   }

@@ -1,8 +1,8 @@
 import { AP } from 'activitypub-core-types';
 import { getId } from 'activitypub-core-utilities';
-import { OutboxPostHandler } from '../..';
+import { OutboxEndpoint } from '../..';
 
-export async function handleUndoLike(this: OutboxPostHandler, activity: AP.Entity) {
+export async function handleUndoLike(this: OutboxEndpoint, activity: AP.Entity) {
   if (!('object' in activity)) {
     throw new Error('Bad activity: no object.');
   }

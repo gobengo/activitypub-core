@@ -1,4 +1,4 @@
-import { OutboxPostHandler } from '.';
+import { OutboxEndpoint } from '.';
 import {
   LOCAL_DOMAIN,
   combineAddresses,
@@ -7,7 +7,7 @@ import {
 } from 'activitypub-core-utilities';
 import { AP } from 'activitypub-core-types';
 
-export async function wrapInActivity() {
+export async function wrapInActivity(this: OutboxEndpoint) {
   this.activity = combineAddresses({
     type: AP.ActivityTypes.CREATE,
     actor: this.actor.id,

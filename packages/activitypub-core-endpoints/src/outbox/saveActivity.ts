@@ -1,8 +1,8 @@
-import { OutboxPostHandler } from '.';
+import { OutboxEndpoint } from '.';
 import { AP } from 'activitypub-core-types';
 import { getId, ACTIVITYSTREAMS_CONTEXT } from 'activitypub-core-utilities';
 
-export async function saveActivity(this: OutboxPostHandler) {
+export async function saveActivity(this: OutboxEndpoint) {
   if (!this.activity) {
     throw new Error('No activity.');
   }

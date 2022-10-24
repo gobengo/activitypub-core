@@ -1,8 +1,8 @@
 import { AP } from 'activitypub-core-types';
 import { getId } from 'activitypub-core-utilities';
-import { OutboxPostHandler } from '..';
+import { OutboxEndpoint } from '..';
 
-export async function handleUpdate(this: OutboxPostHandler) {
+export async function handleUpdate(this: OutboxEndpoint) {
   if (!('object' in this.activity)) {
     throw new Error('Bad activity: no object.');
   }
@@ -57,8 +57,8 @@ export async function handleUpdate(this: OutboxPostHandler) {
     ...this.activity.object,
     ...(object.type !== 'Link' && object.type !== 'Mention'
       ? {
-          updated: new Date(),
-        }
+        updated: new Date(),
+      }
       : null),
   };
 

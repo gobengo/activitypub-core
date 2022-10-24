@@ -1,8 +1,8 @@
-import { OutboxPostHandler } from '..';
+import { OutboxEndpoint } from '..';
 import { AP } from 'activitypub-core-types';
 import { getId } from 'activitypub-core-utilities';
 
-export async function handleDelete(this: OutboxPostHandler, activity?: AP.Entity) {
+export async function handleDelete(this: OutboxEndpoint, activity?: AP.Entity) {
   activity = activity || this.activity;
 
   if (!('object' in activity)) {
@@ -29,8 +29,8 @@ export async function handleDelete(this: OutboxPostHandler, activity?: AP.Entity
     formerType: object.type,
     ...(object.created
       ? {
-          created: object.created,
-        }
+        created: object.created,
+      }
       : null),
   };
 

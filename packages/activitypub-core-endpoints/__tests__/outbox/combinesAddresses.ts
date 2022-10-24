@@ -4,7 +4,8 @@ import {
 } from 'activitypub-core-utilities';
 import { AP } from 'activitypub-core-types';
 import * as data from '../../__data__';
-import { handleOutboxPost } from '.';
+import { handleOutboxPost } from '../../test_utils';
+
 
 describe('Endpoints', () => {
   describe('Actor Outbox', () => {
@@ -35,19 +36,19 @@ describe('Endpoints', () => {
         },
       }
 
-      const { res, saveEntity, broadcast } =
+      const { res, db, delivery } =
         await handleOutboxPost(activity, data.aliceOutboxUrl);
 
-      const [ objectCall, _, __, ___, activityCall ] = saveEntity.mock.calls;
-      const [ objectResult ] = objectCall;
-      const [ activityResult ] = activityCall;
+      const [objectCall, _, __, ___, activityCall] = db.saveEntity.mock.calls;
+      const [objectResult] = objectCall;
+      const [activityResult] = activityCall;
 
       expect(res.statusCode).toBe(201);
       expect(objectResult.to).toStrictEqual(combinedAddressesActivity.to);
       expect(objectResult.cc).toStrictEqual(combinedAddressesActivity.cc);
       expect(activityResult.to).toStrictEqual(combinedAddressesActivity.to);
       expect(activityResult.cc).toStrictEqual(combinedAddressesActivity.cc);
-      expect(broadcast).toBeCalledTimes(1);
+      expect(delivery.broadcast).toBeCalledTimes(1);
     });
   });
 });

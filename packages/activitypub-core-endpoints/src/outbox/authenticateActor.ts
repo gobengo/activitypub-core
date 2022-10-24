@@ -1,7 +1,7 @@
 import cookie from 'cookie';
-import { OutboxPostHandler } from '.';
+import { OutboxEndpoint } from '.';
 
-export async function authenticateActor(this: OutboxPostHandler) {
+export async function authenticateActor(this: OutboxEndpoint) {
   const cookies = cookie.parse(this.req.headers.cookie ?? '');
 
   const actor = await this.databaseService.getActorByUserId(

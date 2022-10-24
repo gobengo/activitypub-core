@@ -1,7 +1,7 @@
 import { parseStream } from 'activitypub-core-utilities';
-import { OutboxPostHandler } from '.';
+import { OutboxEndpoint } from '.';
 
-export async function parseBody(this: OutboxPostHandler) {
+export async function parseBody(this: OutboxEndpoint) {
   const result = await parseStream(this.req);
 
   if (!result) {

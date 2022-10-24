@@ -4,7 +4,8 @@ import {
 } from 'activitypub-core-utilities';
 import { AP } from 'activitypub-core-types';
 import * as data from '../../__data__';
-import { handleOutboxPost } from '.';
+import { handleOutboxPost } from '../../test_utils';
+
 
 describe('Endpoints', () => {
   describe('Actor Outbox', () => {
@@ -19,13 +20,13 @@ describe('Endpoints', () => {
         },
       };
 
-      const { res, saveEntity, insertOrderedItem, broadcast } =
+      const { res, db, delivery } =
         await handleOutboxPost(activity, data.aliceOutboxUrl);
 
       expect(res.statusCode).toBe(201);
-      expect(saveEntity).toBeCalledTimes(4);
-      expect(insertOrderedItem).toBeCalledTimes(1);
-      expect(broadcast).toBeCalledTimes(1);
+      expect(db.saveEntity).toBeCalledTimes(4);
+      expect(db.insertOrderedItem).toBeCalledTimes(1);
+      expect(delivery.broadcast).toBeCalledTimes(1);
     });
   });
 });

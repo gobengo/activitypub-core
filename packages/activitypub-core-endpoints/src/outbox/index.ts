@@ -39,7 +39,7 @@ export async function outboxHandler(
   }
 
   if (req.method === 'POST') {
-    const handler = new OutboxPostHandler(
+    const handler = new OutboxEndpoint(
       req,
       res,
       authenticationService,
@@ -61,7 +61,7 @@ export async function outboxHandler(
   );
 }
 
-export class OutboxPostHandler {
+export class OutboxEndpoint {
   req: IncomingMessage;
   res: ServerResponse;
   authenticationService: Auth;

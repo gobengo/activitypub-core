@@ -1,9 +1,10 @@
-import { OutboxPostHandler } from '../../src/outbox';
+import { OutboxEndpoint } from '../src/outbox';
+import { InboxEndpoint } from '../src/inbox';
 import { IncomingMessage, ServerResponse } from 'http';
 import { Socket } from 'net';
-import * as data from '../../__data__';
+import * as data from '../__data__';
 
-export const handleOutboxPost = async (activity, url) => {
+function getScaffold() {
   const broadcast = jest.fn(async () => {
     return true;
   });
@@ -19,7 +20,7 @@ export const handleOutboxPost = async (activity, url) => {
   const insertItem = jest.fn(async () => {
     return true;
   });
-  
+
   const removeOrderedItem = jest.fn(async () => {
     return true;
   });
@@ -122,14 +123,32 @@ export const handleOutboxPost = async (activity, url) => {
   };
 
   const req = new IncomingMessage(new Socket());
+
+  return {
+    req,
+    res,
+    delivery,
+    auth,
+    db,
+  };
+}
+
+export const handleOutboxPost = async (activity, url) => {
+  const {
+    req,
+    res,
+    delivery,
+    auth,
+    db,
+  } = getScaffold();
+
   req[Symbol.asyncIterator] = async function* () {
     yield JSON.stringify(activity);
   };
   req.method = 'POST';
   req.url = new URL(url).pathname;
 
-  const handler = new OutboxPostHandler(req, res, auth, db, delivery);
-  await handler.init();
+  await new OutboxEndpoint(req, res, auth, db, delivery).handlePost();
 
   return {
     req,
@@ -137,19 +156,5 @@ export const handleOutboxPost = async (activity, url) => {
     auth,
     db,
     delivery,
-    saveEntity,
-    insertOrderedItem,
-    insertItem,
-    removeOrderedItem,
-    removeItem,
-    broadcast,
   };
 };
-
-describe('Endpoints', () => {
-  describe('Actor Outbox', () => {
-    it('works', () => {
-      expect(handleOutboxPost).toBeTruthy();
-    });
-  });
-});

@@ -1,8 +1,8 @@
 import { AP } from 'activitypub-core-types';
 import { isType } from 'activitypub-core-utilities';
-import { OutboxPostHandler } from '.';
+import { OutboxEndpoint } from '.';
 
-export async function runSideEffects(this: OutboxPostHandler) {
+export async function runSideEffects(this: OutboxEndpoint) {
   if (isType(this.activity, AP.ActivityTypes.CREATE)) {
     await this.handleCreate();
   }

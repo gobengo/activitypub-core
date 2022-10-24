@@ -1,7 +1,7 @@
 import { LOCAL_DOMAIN } from 'activitypub-core-utilities';
-import { OutboxPostHandler } from '.';
+import { OutboxEndpoint } from '.';
 
-export async function getActor(this: OutboxPostHandler) {
+export async function getActor(this: OutboxEndpoint) {
   const url = new URL(`${LOCAL_DOMAIN}${this.req.url}`);
 
   const actor = await this.databaseService.findOne('actor', {

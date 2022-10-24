@@ -1,4 +1,4 @@
-import { OutboxPostHandler } from '..';
+import { OutboxEndpoint } from '..';
 import { AP } from 'activitypub-core-types';
 import {
   ACTIVITYSTREAMS_CONTEXT,
@@ -16,7 +16,7 @@ import { getId, getGuid } from 'activitypub-core-utilities';
  *    (outbox:create:actor-to-attributed-to) SHOULD
  */
 
-export async function handleCreate(this: OutboxPostHandler) {
+export async function handleCreate(this: OutboxEndpoint) {
   if (!('object' in this.activity)) {
     throw new Error('Bad activity: no object.');
   }

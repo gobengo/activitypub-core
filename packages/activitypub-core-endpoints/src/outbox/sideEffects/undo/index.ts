@@ -1,6 +1,6 @@
 import { AP } from 'activitypub-core-types';
 import { getId, isType } from 'activitypub-core-utilities';
-import { OutboxPostHandler } from '../..';
+import { OutboxEndpoint } from '../..';
 
 /**
  * Undo
@@ -10,7 +10,7 @@ import { OutboxPostHandler } from '../..';
  *     undone (outbox:undo:ensures-activity-and-actor-are-same) MUST
  */
 
-export async function handleUndo(this: OutboxPostHandler) {
+export async function handleUndo(this: OutboxEndpoint) {
   if (!('object' in this.activity)) {
     throw new Error('Bad activity: no object.');
   }
